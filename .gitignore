@@ -1,0 +1,51 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch.json and tasks.json to advise
+# Visual Studio Code items and settings.
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/build/
+
+# iOS/macOS related
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/Flutter.podspec
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/io.flutter.embedded_views_preview
+**/Pods/
+**/.symlinks/
+**/frameworks/
+**/DerivedData/
+
+# Android related
+**/android/app/src/main/res/values/strings.xml
+**/android/key.properties
+**/android/app/google-services.json
+**/*.keystore
+**/*.jks
+
+# Environment files
+.env
+.env.*
