@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
+import '../constants/app_colors.dart';
 
-class CustomButton extends StatelessWidget {
+class AppButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final LinearGradient? gradient;
@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   final bool isLoading;
   final TextStyle? textStyle;
 
-  const CustomButton({
+  const AppButton({
     super.key,
     required this.text,
     required this.onPressed,

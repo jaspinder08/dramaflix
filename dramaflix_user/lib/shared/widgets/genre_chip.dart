@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 
 class GenreChip extends StatelessWidget {
   final String label;

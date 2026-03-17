@@ -2,7 +2,7 @@ import 'package:dramaflix/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import '../../../shared/widgets/drama_card.dart';
 import '../../../shared/widgets/genre_chip.dart';
 import '../../../shared/widgets/banner_section.dart';

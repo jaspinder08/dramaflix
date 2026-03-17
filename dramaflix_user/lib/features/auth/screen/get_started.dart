@@ -1,9 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../shared/widgets/custom_button.dart';
 import 'package:dramaflix/shared/widgets/custom_logo_decor.dart';
 import '../../../services/onboarding_service.dart';
 
@@ -46,7 +45,6 @@ class _GetStartedState extends ConsumerState<GetStarted> {
               ),
             ),
           ),
-
           // Content
           SafeArea(
             child: Padding(
@@ -79,7 +77,7 @@ class _GetStartedState extends ConsumerState<GetStarted> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  CustomButton(
+                  AppButton(
                     text: "Get Started",
                     onPressed: () async {
                       await ref

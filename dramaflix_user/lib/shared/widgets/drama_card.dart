@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 
 class DramaCard extends StatelessWidget {
   final String imageUrl;

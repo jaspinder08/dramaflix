@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 
 // ──────────────────────────────────────────────────────────────────
 // EpisodePlayer

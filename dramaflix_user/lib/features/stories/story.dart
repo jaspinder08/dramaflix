@@ -1,4 +1,4 @@
-import 'package:dramaflix/core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import 'package:dramaflix/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

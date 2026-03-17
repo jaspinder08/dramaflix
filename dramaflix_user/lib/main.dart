@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
-import 'core/theme/app_theme.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import 'services/supabase_service.dart';
 import 'services/onboarding_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';

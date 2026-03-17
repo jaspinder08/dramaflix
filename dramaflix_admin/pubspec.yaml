@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  dramaflix_shared:
+    path: ../dramaflix_shared
 
 dev_dependencies:
   flutter_test:

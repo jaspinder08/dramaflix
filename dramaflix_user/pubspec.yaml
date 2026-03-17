@@ -16,8 +16,9 @@ dependencies:
   video_player: ^2.9.2
   dio: ^5.9.2
   logger: ^2.6.2
-  shared_preferences: ^2.5.3
   flutter_svg: ^2.0.10+1
+  dramaflix_shared:
+    path: ../dramaflix_shared
 
 dev_dependencies:
   flutter_test:

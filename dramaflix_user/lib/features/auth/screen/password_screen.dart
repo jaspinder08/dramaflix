@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../shared/widgets/custom_button.dart';
-import '../../../shared/widgets/custom_text_field.dart';
 import '../../../providers/auth_provider.dart';
 
 class PasswordScreen extends ConsumerStatefulWidget {
@@ -83,7 +81,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                CustomTextField(
+                AppTextField(
                   controller: _passwordController,
                   label: "Password",
                   hintText: "••••••••",
@@ -106,7 +104,7 @@ class _PasswordScreenState extends ConsumerState<PasswordScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-                CustomButton(
+                AppButton(
                   text: isNewUser ? "Sign Up" : "Login",
                   isLoading: authState.isLoading,
                   onPressed: _handleSubmit,
