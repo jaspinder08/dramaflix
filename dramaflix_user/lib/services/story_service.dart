@@ -1,5 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../models/story.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 
 class StoryService {
   final SupabaseClient _supabase;

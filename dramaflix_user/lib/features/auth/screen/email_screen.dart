@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dramaflix_shared/dramaflix_shared.dart';
+import 'package:dramaflix_shared/widgets/app_logo.dart';
 import '../../../core/router/app_routes.dart';
-import '../../../shared/widgets/custom_logo_decor.dart';
 import '../../../providers/auth_provider.dart';
 
 class EmailScreen extends ConsumerStatefulWidget {
@@ -65,7 +65,7 @@ class _EmailScreenState extends ConsumerState<EmailScreen> {
                       style: Theme.of(context).textTheme.headlineMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    const CustomLogoDecor(),
+                    const AppLogo(),
                   ],
                 ),
                 const SizedBox(height: 8),

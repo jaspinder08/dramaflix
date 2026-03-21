@@ -5,6 +5,7 @@ class Story {
   final String title;
   final String description;
   final String thumbnailUrl;
+  final String? trailerUrl;
   final String category;
   final List<Episode> episodes;
 
@@ -13,6 +14,7 @@ class Story {
     required this.title,
     required this.description,
     required this.thumbnailUrl,
+    this.trailerUrl,
     required this.category,
     this.episodes = const [],
   });
@@ -28,6 +30,7 @@ class Story {
       title: json['title'] as String,
       description: json['description'] as String,
       thumbnailUrl: json['thumbnail_url'] as String,
+      trailerUrl: json['trailer_url'] as String?,
       category: json['category'] as String,
       episodes: episodes,
     );
@@ -39,6 +42,7 @@ class Story {
       'title': title,
       'description': description,
       'thumbnail_url': thumbnailUrl,
+      'trailer_url': trailerUrl,
       'category': category,
       'episodes': episodes.map((e) => e.toJson()).toList(),
     };

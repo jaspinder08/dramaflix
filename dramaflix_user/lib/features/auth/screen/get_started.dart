@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dramaflix_shared/dramaflix_shared.dart';
 import '../../../core/router/app_routes.dart';
-import 'package:dramaflix/shared/widgets/custom_logo_decor.dart';
+import 'package:dramaflix_shared/widgets/app_logo.dart';
 import '../../../services/onboarding_service.dart';
 
 class GetStarted extends ConsumerStatefulWidget {
@@ -57,8 +57,7 @@ class _GetStartedState extends ConsumerState<GetStarted> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Spacer(),
-                  CustomLogoDecor(),
-
+                  AppLogo(),
                   const SizedBox(height: 20),
 
                   Text(

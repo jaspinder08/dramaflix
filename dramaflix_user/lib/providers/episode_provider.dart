@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/episode.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import 'story_provider.dart';
 
 final currentEpisodeProvider = StateProvider<Episode?>((ref) => null);

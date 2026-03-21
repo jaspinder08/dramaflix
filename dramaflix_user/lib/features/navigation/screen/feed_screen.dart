@@ -19,16 +19,19 @@ class _FeedScreenState extends State<FeedScreen> {
       'videoPath': 'assets/videos/stories/the_locked_appartment/episode_1.mp4',
       'storyName': 'The Locked Apartment',
       'totalEpisodes': 12,
+      'isTrailer': true,
     },
     {
       'videoPath': 'assets/videos/stories/the_locked_appartment/episode_2.mp4',
       'storyName': 'Shadow of Deception',
       'totalEpisodes': 18,
+      'isTrailer': true,
     },
     {
       'videoPath': 'assets/videos/stories/the_locked_appartment/episode_3.mp4',
       'storyName': 'Eternal Whispers',
       'totalEpisodes': 24,
+      'isTrailer': true,
     },
   ];
 
@@ -198,6 +201,25 @@ class _FeedVideoItemState extends State<FeedVideoItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.dramaPink,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    "TRAILER",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 Text(
                   widget.storyName,
                   style: const TextStyle(

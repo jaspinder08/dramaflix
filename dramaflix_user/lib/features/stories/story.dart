@@ -1,7 +1,8 @@
-import 'package:dramaflix_shared/dramaflix_shared.dart';
 import 'package:dramaflix/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 
 class StorieMainScreen extends StatefulWidget {
   const StorieMainScreen({super.key});
@@ -11,6 +12,36 @@ class StorieMainScreen extends StatefulWidget {
 }
 
 class _StorieMainScreenState extends State<StorieMainScreen> {
+  late VideoPlayerController _controller;
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initController();
+  }
+
+  Future<void> _initController() async {
+    _controller = VideoPlayerController.asset(
+      'assets/videos/stories/the_locked_appartment/episode_1.mp4',
+    );
+    try {
+      await _controller.initialize();
+      _controller.setLooping(true);
+      if (mounted) {
+        setState(() => _initialized = true);
+        _controller.play();
+      }
+    } catch (e) {
+      debugPrint("Error initializing trailer player: $e");
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,25 +55,36 @@ class _StorieMainScreenState extends State<StorieMainScreen> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.45,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://picsum.photos/seed/hero/800/1200",
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  foregroundDecoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.8),
-                        Colors.transparent,
-                        Colors.black,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
+                  color: Colors.black,
+                  child: _initialized
+                      ? Stack(
+                          children: [
+                            Center(
+                              child: AspectRatio(
+                                aspectRatio: _controller.value.aspectRatio,
+                                child: VideoPlayer(_controller),
+                              ),
+                            ),
+                            Positioned.fill(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.black.withOpacity(0.5),
+                                      Colors.transparent,
+                                      Colors.black,
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : const Center(
+                          child: CircularProgressIndicator(color: AppColors.dramaPink),
+                        ),
                 ),
                 Positioned(
                   bottom: 20,

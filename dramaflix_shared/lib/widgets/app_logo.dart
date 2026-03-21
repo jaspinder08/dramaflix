@@ -1,8 +1,8 @@
 import 'package:dramaflix_shared/dramaflix_shared.dart';
 import 'package:flutter/material.dart';
 
-class CustomLogoDecor extends StatelessWidget {
-  const CustomLogoDecor({super.key});
+class AppLogo extends StatelessWidget {
+  const AppLogo({super.key});
 
   @override
   Widget build(BuildContext context) {

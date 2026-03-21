@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../models/story.dart';
+import 'package:dramaflix_shared/dramaflix_shared.dart';
 import '../services/story_service.dart';
 import 'auth_provider.dart';
 
