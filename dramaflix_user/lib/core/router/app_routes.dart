@@ -10,4 +10,5 @@ class AppRoutes {
   static const String profile = '/profile';
   static const String story = '/story';
   static const String episode = '/episode';
+  static const String watchlist = '/watchlist';
 }

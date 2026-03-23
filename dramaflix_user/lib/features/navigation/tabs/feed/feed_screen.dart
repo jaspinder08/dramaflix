@@ -91,10 +91,13 @@ class _FeedVideoItemState extends State<FeedVideoItem> {
   late VideoPlayerController _controller;
   bool _initialized = false;
   bool _isPlaying = false;
+  bool _isLiked = false;
+  late int _likeCount;
 
   @override
   void initState() {
     super.initState();
+    _likeCount = 100 + widget.storyName.length * 10; // Simulated count
     _initController();
   }
 
@@ -254,22 +257,39 @@ class _FeedVideoItemState extends State<FeedVideoItem> {
           ),
         ),
 
-        // Side Buttons (Like, Share)
         Positioned(
           right: 16,
           bottom: MediaQuery.of(context).size.height * 0.1,
           child: Column(
             children: [
               _buildSideButton(
-                icon: Icons.favorite_border,
-                label: "Like",
-                onTap: () {},
+                icon: _isLiked ? Icons.favorite : Icons.favorite_border,
+                iconColor: _isLiked ? AppColors.dramaPink : Colors.white,
+                label: _likeCount.toString(),
+                onTap: () {
+                  setState(() {
+                    _isLiked = !_isLiked;
+                    if (_isLiked) {
+                      _likeCount++;
+                    } else {
+                      _likeCount--;
+                    }
+                  });
+                },
               ),
               const SizedBox(height: 24),
               _buildSideButton(
                 icon: Icons.share_outlined,
                 label: "Share",
-                onTap: () {},
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Sharing ${widget.storyName}..."),
+                      backgroundColor: AppColors.dramaPink,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -327,6 +347,7 @@ class _FeedVideoItemState extends State<FeedVideoItem> {
 
   Widget _buildSideButton({
     required IconData icon,
+    Color iconColor = Colors.white,
     required String label,
     required VoidCallback onTap,
   }) {
@@ -341,7 +362,7 @@ class _FeedVideoItemState extends State<FeedVideoItem> {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.white10),
             ),
-            child: Icon(icon, color: Colors.white, size: 28),
+            child: Icon(icon, color: iconColor, size: 28),
           ),
           const SizedBox(height: 6),
           Text(

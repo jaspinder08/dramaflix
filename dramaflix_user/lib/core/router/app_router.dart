@@ -2,7 +2,8 @@ import 'package:dramaflix/features/auth/screen/email_screen.dart';
 import 'package:dramaflix/features/auth/screen/password_screen.dart';
 import 'package:dramaflix/features/auth/screen/get_started.dart';
 import 'package:dramaflix/features/episodePlayer/episodeplayer.dart';
-import 'package:dramaflix/features/navigation/screen/main_navigation.dart';
+import 'package:dramaflix/features/navigation/common/watchlist.dart';
+import 'package:dramaflix/features/navigation/tabs/main_navigation.dart';
 import 'package:dramaflix/features/stories/story.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/auth/screen/splash_screen.dart';
@@ -44,6 +45,10 @@ final appRouter = GoRouter(
         episodeTitle: 'Episode 1 — The Locked Apartment',
         onBackPressed: () => context.pop(),
       ),
+    ),
+    GoRoute(
+      path: AppRoutes.watchlist,
+      builder: (context, state) => const WatchlistScreen(),
     ),
   ],
 );

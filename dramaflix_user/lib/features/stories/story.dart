@@ -1,47 +1,11 @@
 import 'package:dramaflix/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:video_player/video_player.dart';
 import 'package:dramaflix_shared/dramaflix_shared.dart';
 
-class StorieMainScreen extends StatefulWidget {
+class StorieMainScreen extends StatelessWidget {
   const StorieMainScreen({super.key});
 
-  @override
-  State<StorieMainScreen> createState() => _StorieMainScreenState();
-}
-
-class _StorieMainScreenState extends State<StorieMainScreen> {
-  late VideoPlayerController _controller;
-  bool _initialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _initController();
-  }
-
-  Future<void> _initController() async {
-    _controller = VideoPlayerController.asset(
-      'assets/videos/stories/the_locked_appartment/episode_1.mp4',
-    );
-    try {
-      await _controller.initialize();
-      _controller.setLooping(true);
-      if (mounted) {
-        setState(() => _initialized = true);
-        _controller.play();
-      }
-    } catch (e) {
-      debugPrint("Error initializing trailer player: $e");
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,40 +16,49 @@ class _StorieMainScreenState extends State<StorieMainScreen> {
             Stack(
               clipBehavior: Clip.none,
               children: [
+                // Single Banner Image instead of Video
                 Container(
                   height: MediaQuery.of(context).size.height * 0.45,
                   width: double.infinity,
-                  color: Colors.black,
-                  child: _initialized
-                      ? Stack(
-                          children: [
-                            Center(
-                              child: AspectRatio(
-                                aspectRatio: _controller.value.aspectRatio,
-                                child: VideoPlayer(_controller),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.black.withOpacity(0.5),
-                                      Colors.transparent,
-                                      Colors.black,
-                                    ],
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : const Center(
-                          child: CircularProgressIndicator(color: AppColors.dramaPink),
-                        ),
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        "https://picsum.photos/seed/drama_banner/800/600",
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withOpacity(0.6),
+                          Colors.transparent,
+                          Colors.black,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
+                    ),
+                  ),
                 ),
+
+                // Back Button
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                      ),
+                      onPressed: () => context.pop(),
+                    ),
+                  ),
+                ),
+
+                // Drama Info Overlay
                 Positioned(
                   bottom: 20,
                   left: 16,
@@ -124,7 +97,7 @@ class _StorieMainScreenState extends State<StorieMainScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  // const SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -144,7 +117,7 @@ class _StorieMainScreenState extends State<StorieMainScreen> {
                                 width: 140,
                                 child: RectangleDramaCard(
                                   imageUrl:
-                                      "https://picsum.photos/seed/ep$index/200/300",
+                                      "https://picsum.photos/seed/ep$index/400/225",
                                   title: "",
                                   progress: index < 3 ? 0.8 : null,
                                 ),
@@ -233,7 +206,6 @@ class RectangleDramaCard extends StatelessWidget {
                     aspectRatio: 16 / 9,
                     child: Image.network(imageUrl, fit: BoxFit.cover),
                   ),
-
                   if (isPremium)
                     Positioned(
                       top: 8,
@@ -257,7 +229,6 @@ class RectangleDramaCard extends StatelessWidget {
                         ),
                       ),
                     ),
-
                   if (progress != null)
                     Positioned(
                       bottom: 0,
@@ -276,15 +247,17 @@ class RectangleDramaCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 8),
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
-            ),
+            if (title.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+              ),
+            ],
           ],
         ),
       ),

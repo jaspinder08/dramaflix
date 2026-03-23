@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dramaflix_shared/dramaflix_shared.dart';
-import '../../../shared/widgets/drama_card.dart';
+import '../../../../shared/widgets/drama_card.dart';
 
 class ExploreScreen extends ConsumerWidget {
   const ExploreScreen({super.key});

@@ -86,13 +86,13 @@ class _BannerSectionState extends State<BannerSection> {
             (index) => AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               margin: const EdgeInsets.symmetric(horizontal: 4),
-              height: 4,
-              width: _currentPage == index ? 24 : 8,
+              height: 8,
+              width: 8,
               decoration: BoxDecoration(
                 color: _currentPage == index
                     ? AppColors.dramaPink
                     : Colors.white.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(2),
+                shape: BoxShape.circle,
               ),
             ),
           ),

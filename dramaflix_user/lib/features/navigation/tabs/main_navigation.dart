@@ -6,10 +6,10 @@ import 'package:dramaflix_shared/dramaflix_shared.dart';
 import '../../../core/constants/app_icons.dart';
 import '../../../providers/main_provider.dart';
 
-import 'home.dart';
-import 'explore_screen.dart';
-import 'feed_screen.dart';
-import 'profile_screen.dart';
+import 'home/home.dart';
+import 'search/explore_screen.dart';
+import 'feed/feed_screen.dart';
+import 'profile/profile_screen.dart';
 
 class Navigation extends ConsumerWidget {
   const Navigation({super.key});
