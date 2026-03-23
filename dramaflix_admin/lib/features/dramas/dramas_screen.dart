@@ -1,47 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:dramaflix_shared/dramaflix_shared.dart';
-import '../../widgets/app_card.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import '../../widgets/glass_card.dart';
 
-class DramasScreen extends StatelessWidget {
+class DramasScreen extends StatefulWidget {
   const DramasScreen({super.key});
 
   @override
+  State<DramasScreen> createState() => _DramasScreenState();
+}
+
+class _DramasScreenState extends State<DramasScreen> {
+  String selectedFilter = 'All';
+
+  @override
   Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _buildHeader(),
+        _buildFilters(),
+        Expanded(child: _buildDramaGrid()),
+      ],
+    );
+  }
+
+  Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
+      padding: const EdgeInsets.all(32),
+      child: Row(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Manage Dramas',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              Text(
+                'Drama Management',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
               ),
-              AppButton(
-                text: 'Add New Drama',
-                width: 180,
-                onPressed: () => _showAddDramaDialog(context),
+              SizedBox(height: 4),
+              Text(
+                'Total 124 dramas in the library',
+                style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
               ),
             ],
           ),
-          const SizedBox(height: 24),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 0.8,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-              ),
-              itemCount: 8,
-              itemBuilder: (context, index) {
-                return _buildDramaCard(context, index);
-              },
+          const Spacer(),
+          ElevatedButton.icon(
+            onPressed: () => _showAddDramaDialog(context),
+            icon: const Icon(LucideIcons.plus, size: 18),
+            label: const Text('Add New Drama'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.dramaPink,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
           ),
         ],
@@ -49,114 +61,184 @@ class DramasScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDramaCard(BuildContext context, int index) {
-    return AppCard(
-      padding: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(16),
-                    ),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://picsum.photos/seed/${index + 10}/400/600',
-                      ),
+  Widget _buildFilters() {
+    final filters = ['All', 'Published', 'Draft', 'Trending'];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Row(
+        children: filters.map((filter) {
+          final isSelected = selectedFilter == filter;
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: FilterChip(
+              label: Text(filter),
+              selected: isSelected,
+              onSelected: (val) => setState(() => selectedFilter = filter),
+              backgroundColor: Colors.white.withOpacity(0.05),
+              selectedColor: AppColors.dramaPink.withOpacity(0.2),
+              checkmarkColor: AppColors.dramaPink,
+              labelStyle: TextStyle(
+                color: isSelected ? AppColors.dramaPink : AppColors.textSecondary,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: isSelected ? AppColors.dramaPink.withOpacity(0.5) : Colors.transparent,
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _buildDramaGrid() {
+    return AnimationLimiter(
+      child: GridView.builder(
+        padding: const EdgeInsets.all(32),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 5,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 24,
+          mainAxisSpacing: 24,
+        ),
+        itemCount: 15,
+        itemBuilder: (context, index) {
+          return AnimationConfiguration.staggeredGrid(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            columnCount: 5,
+            child: ScaleAnimation(
+              child: FadeInAnimation(
+                child: _buildDramaCard(index),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDramaCard(int index) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GlassCard(
+        padding: EdgeInsets.zero,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 3,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                    child: Image.network(
+                      'https://picsum.photos/seed/${index + 100}/400/600',
                       fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 12,
-                  right: 12,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.background.withOpacity(0.7),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.play_arrow_rounded,
-                      color: AppColors.dramaPink,
-                      size: 20,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 12,
-                  left: 12,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppColors.dramaPink.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Text(
-                      'TRAILER',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                  _buildStatusBadge(index),
+                  _buildActionsOverlay(),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Drama Title ${index + 1}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  '12 Episodes',
-                  style: TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 13,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Edit',
-                        style: TextStyle(color: AppColors.dramaPink),
-                      ),
+                    Text(
+                      'Drama Title ${index + 1}',
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(width: 8),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'View',
-                        style: TextStyle(color: AppColors.textSecondary),
-                      ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Romance • 24 Episodes',
+                      style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                    ),
+                    const Spacer(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildCardStat(LucideIcons.eye, '1.2M'),
+                        _buildCardStat(LucideIcons.heart, '45k Feed Likes'),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusBadge(int index) {
+    bool isPublished = index % 3 != 0;
+    return Positioned(
+      top: 12,
+      left: 12,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: (isPublished ? Colors.green : Colors.orange).withOpacity(0.9),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          isPublished ? 'PUBLISHED' : 'DRAFT',
+          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardStat(IconData icon, String value) {
+    return Row(
+      children: [
+        Icon(icon, size: 14, color: AppColors.textSecondary),
+        const SizedBox(width: 4),
+        Text(value, style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+      ],
+    );
+  }
+
+  Widget _buildActionsOverlay() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0),
+      ),
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildIconButton(LucideIcons.edit3, () {}),
+            const SizedBox(width: 12),
+            _buildIconButton(LucideIcons.trash2, () {}),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(IconData icon, VoidCallback onPressed) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        shape: BoxShape.circle,
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: Colors.white, size: 18),
+        onPressed: onPressed,
       ),
     );
   }
@@ -164,55 +246,80 @@ class DramasScreen extends StatelessWidget {
   void _showAddDramaDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: AppColors.surface,
-        title: const Text(
-          'Add New Drama',
-          style: TextStyle(color: Colors.white),
-        ),
-        content: SizedBox(
-          width: 500,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: GlassCard(
+          width: 600,
+          padding: const EdgeInsets.all(32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppTextField(
-                controller: TextEditingController(),
-                label: 'Drama Title',
-                prefixIcon: Icons.title,
-                hintText: 'Enter drama name',
+              const Text(
+                'Add New Drama',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
               ),
+              const SizedBox(height: 24),
+              _buildField('Title', LucideIcons.type),
               const SizedBox(height: 16),
-              AppTextField(
-                controller: TextEditingController(),
-                label: 'Description',
-                prefixIcon: Icons.description_outlined,
-                hintText: 'Enter short description',
+              _buildField('Description', LucideIcons.alignLeft, maxLines: 3),
+              const SizedBox(height: 16),
+              _buildField('Tags (comma separated)', LucideIcons.tag),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(child: _buildUploadBox('Thumbnail', LucideIcons.image)),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildUploadBox('Trailer', LucideIcons.film)),
+                ],
               ),
               const SizedBox(height: 24),
               Row(
                 children: [
-                   Expanded(child: _buildUploadBox('Cover Image', Icons.image_outlined)),
-                   const SizedBox(width: 16),
-                   Expanded(child: _buildUploadBox('Trailer Video', Icons.movie_outlined)),
+                  const Text('Published', style: TextStyle(color: Colors.white)),
+                  const Spacer(),
+                  Switch(value: true, onChanged: (v) {}, activeColor: AppColors.dramaPink),
+                ],
+              ),
+              const SizedBox(height: 32),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Cancel', style: TextStyle(color: AppColors.textSecondary)),
+                  ),
+                  const SizedBox(width: 16),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.dramaPink,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Text('Publish'),
+                  ),
                 ],
               ),
             ],
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-          ),
-          AppButton(
-            text: 'Save Drama',
-            width: 120,
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
+      ),
+    );
+  }
+
+  Widget _buildField(String label, IconData icon, {int maxLines = 1}) {
+    return TextField(
+      maxLines: maxLines,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: AppColors.textSecondary),
+        prefixIcon: Icon(icon, color: AppColors.textSecondary, size: 20),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.05),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       ),
     );
   }
@@ -221,35 +328,21 @@ class DramasScreen extends StatelessWidget {
     return Container(
       height: 120,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: AppColors.textSecondary.withOpacity(0.2),
-        ),
+        color: Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
-        color: AppColors.background,
+        border: Border.all(color: Colors.white.withOpacity(0.1)),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: AppColors.textSecondary,
-            size: 32,
-          ),
+          Icon(icon, color: AppColors.textSecondary, size: 24),
           const SizedBox(height: 8),
-          const Icon(
-            Icons.cloud_upload_outlined,
-            color: AppColors.textSecondary,
-            size: 20,
-          ),
+          Text(label, style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
           const SizedBox(height: 4),
-          Text(
-            'Upload $label',
-            style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 10,
-            ),
-          ),
+          const Text('Upload File', style: TextStyle(color: AppColors.dramaPink, fontSize: 12, fontWeight: FontWeight.bold)),
         ],
       ),
     );
   }
 }
+

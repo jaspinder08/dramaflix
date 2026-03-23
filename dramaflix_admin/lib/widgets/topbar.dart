@@ -15,7 +15,7 @@ class TopBar extends StatelessWidget {
         color: AppColors.background,
         border: Border(
           bottom: BorderSide(
-            color: AppColors.textSecondary.withOpacity(0.1),
+            color: AppColors.textSecondary.withValues(alpha: 0.1),
             width: 1,
           ),
         ),
@@ -58,7 +58,7 @@ class TopBar extends StatelessWidget {
               const SizedBox(width: 12),
               CircleAvatar(
                 radius: 18,
-                backgroundColor: AppColors.dramaPurple.withOpacity(0.2),
+                backgroundColor: AppColors.dramaPurple.withValues(alpha: 0.2),
                 child: const Icon(
                   Icons.person_outline,
                   color: AppColors.dramaPurple,

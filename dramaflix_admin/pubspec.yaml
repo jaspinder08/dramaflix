@@ -12,6 +12,13 @@ dependencies:
   dramaflix_shared:
     path: ../dramaflix_shared
   flutter_riverpod: ^2.6.1
+  fl_chart: ^1.1.0
+  intl: ^0.20.2
+  glassmorphism_ui: ^0.3.0
+  lucide_icons: ^0.257.0
+  animate_do: ^4.2.0
+  google_fonts: ^6.3.2
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:

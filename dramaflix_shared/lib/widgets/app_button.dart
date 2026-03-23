@@ -33,9 +33,7 @@ class AppButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: [
           BoxShadow(
-            color: (gradient?.colors.first ?? AppColors.dramaPink).withOpacity(
-              0.3,
-            ),
+            color: (gradient?.colors.first ?? AppColors.dramaPink).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
