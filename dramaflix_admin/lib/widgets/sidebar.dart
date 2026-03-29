@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dramaflix_shared/dramaflix_shared.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../features/login/admin_login.dart';
 
 class Sidebar extends StatelessWidget {
   final int selectedIndex;
@@ -11,6 +12,49 @@ class Sidebar extends StatelessWidget {
     required this.selectedIndex,
     required this.onItemSelected,
   });
+
+  void _handleLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1A2E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Row(
+          children: [
+            Icon(LucideIcons.logOut, color: Colors.redAccent, size: 22),
+            SizedBox(width: 12),
+            Text('Logout', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: const Text(
+          'Are you sure you want to log out of the admin panel?',
+          style: TextStyle(color: Color(0xFFA0A0A5)),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel', style: TextStyle(color: Color(0xFFA0A0A5))),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(ctx); // close the dialog
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const AdminLoginScreen()),
+                (route) => false,
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            ),
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +125,7 @@ class Sidebar extends StatelessWidget {
             icon: LucideIcons.logOut,
             label: 'Logout',
             isSelected: false,
-            onTap: () {
-              // Handle logout
-            },
+            onTap: () => _handleLogout(context),
             isDestructive: true,
           ),
           const SizedBox(height: 24),
